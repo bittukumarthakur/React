@@ -1,4 +1,4 @@
-import React from "./src/React.js";
+import React from "./src/my-own-react.js";
 import ReactDom from "./src/react-dom.js";
 
 class Timer extends React.Component {
@@ -14,7 +14,6 @@ class Timer extends React.Component {
       {
         onClick: () => {
           this.setState(({ count }) => {
-            console.log("Timer => ", this);
             return { count: count + 1 };
           });
         },
@@ -29,10 +28,13 @@ class Timer extends React.Component {
 }
 
 const main = () => {
-  const timer = React.createElement(Timer, {});
+  const timer1 = React.createElement(Timer, {});
+  const timer2 = React.createElement(Timer, {});
+  const div = React.createElement("div", {}, [timer1, timer2]);
+
   const root = document.getElementById("root");
 
-  ReactDom.render(root, timer);
+  ReactDom.render(root, div);
 };
 
 main();

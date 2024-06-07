@@ -2,9 +2,6 @@ const concileDom = (reactElement) => {
   const { type, props, children } = reactElement;
 
   if (typeof type === "object") {
-    console.log("type: ", type);
-    console.log(type.render());
-
     return concileDom(type.render());
   }
 
@@ -48,16 +45,8 @@ const createVDom = (reactElement) => {
   return reactElement;
 };
 
-const render = (rootElement, reactElement, virtualDom) => {
-  render.context = { rootElement, reactElement };
-
-  if (!virtualDom) {
-    render.context.virtualDom = createVDom(reactElement);
-  }
-
-  console.log("V dom", JSON.stringify(render.context.virtualDom, null, 4));
-
-  const html = concileDom(render.context.virtualDom);
+const updateRealDom = (rootElement, virtualDom) => {
+  const html = concileDom(virtualDom);
 
   [...rootElement.children].forEach((child) => {
     child.remove();
@@ -66,4 +55,10 @@ const render = (rootElement, reactElement, virtualDom) => {
   rootElement.appendChild(html);
 };
 
-export default { render };
+const render = (rootElement, reactElement) => {
+  const virtualDom = createVDom(reactElement);
+  render.context = { rootElement, reactElement, virtualDom };
+  updateRealDom(rootElement, virtualDom);
+};
+
+export default { render, updateRealDom };

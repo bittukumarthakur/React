@@ -9,14 +9,12 @@ class Component {
 
   setState(fn) {
     this.state = fn(this.state);
-    const { rootElement, reactElement } = ReactDom.render.context;
-    ReactDom.render(rootElement, reactElement);
+    const { rootElement, virtualDom } = ReactDom.render.context;
+    ReactDom.updateRealDom(rootElement, virtualDom);
   }
 
   render() {}
 }
-
-const updateInstance = (instance) => {};
 
 const createElement = (type, props, children) => {
   return { type, props, children };
