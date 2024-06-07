@@ -1,24 +1,38 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import React from "./src/React.js";
+import ReactDom from "./src/react-dom.js";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+class Timer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
 
-setupCounter(document.querySelector('#counter'))
+  render() {
+    const heading = React.createElement("h1", {}, "Timer");
+    const button = React.createElement(
+      "button",
+      {
+        onClick: () => {
+          this.setState(({ count }) => {
+            console.log("Timer => ", this);
+            return { count: count + 1 };
+          });
+        },
+      },
+      `Clicked ${this.state.count} times`
+    );
+
+    const div = React.createElement("div", {}, [heading, button]);
+
+    return div;
+  }
+}
+
+const main = () => {
+  const timer = React.createElement(Timer, {});
+  const root = document.getElementById("root");
+
+  ReactDom.render(root, timer);
+};
+
+main();
