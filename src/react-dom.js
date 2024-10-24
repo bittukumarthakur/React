@@ -22,7 +22,7 @@ const concileDom = (reactElement) => {
   return currentElement;
 };
 
-const createVDom = (reactElement) => {
+const createVirtualDom = (reactElement) => {
   const { type, props, children } = reactElement;
 
   if (type.prototype?.constructor === type) {
@@ -30,7 +30,7 @@ const createVDom = (reactElement) => {
     return {
       type: new type(props),
       props,
-      children: createVDom(component.render()),
+      children: createVirtualDom(component.render()),
     };
   }
 
@@ -38,7 +38,7 @@ const createVDom = (reactElement) => {
     return {
       type,
       props,
-      children: children.map((child) => createVDom(child)),
+      children: children.map((child) => createVirtualDom(child)),
     };
   }
 
@@ -56,7 +56,8 @@ const updateRealDom = (rootElement, virtualDom) => {
 };
 
 const render = (rootElement, reactElement) => {
-  const virtualDom = createVDom(reactElement);
+  const virtualDom = createVirtualDom(reactElement);
+
   render.context = { rootElement, reactElement, virtualDom };
   updateRealDom(rootElement, virtualDom);
 };
